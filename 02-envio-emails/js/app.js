@@ -1,26 +1,24 @@
-'use strict';
-
+// variables
 const email = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
 const mensaje = document.querySelector('#mensaje');
 
 const btnEnviar = document.querySelector('#enviar');
-const formularioEnviar = document.querySelector('enviar-mail');
+const formularioEnviar = document.querySelector('#enviar-mail');
 const resetBtn = document.querySelector('#resetBtn');
 
-// EventListeners
+// event Listener
 
 eventListeners();
 
 function eventListeners() {
-    // Inicio de la app
+    // Inicio de la aplicación y deshabilitar submit
     document.addEventListener('DOMContentLoaded', inicioApp);
 
     // Campos del formulario
     email.addEventListener('blur', validarFormulario);
     asunto.addEventListener('blur', validarFormulario);
     mensaje.addEventListener('blur', validarFormulario);
-
 
     // Boton de enviar en el submit
     formularioEnviar.addEventListener('submit', enviarEmail);
@@ -30,30 +28,33 @@ function eventListeners() {
 }
 
 
-// Funciones
 
+// funciones
 function inicioApp() {
-    // Deshabilitar el envio
+    // deshabilitar el envio
     btnEnviar.disabled = true;
     btnEnviar.classList.add('cursor-not-allowed', 'opacity-50')
 }
 
-// Valida que el campo tenga algo escrito
+
+// Valida que el campo tengo algo escrito
 
 function validarFormulario(e) {
 
-    if (e.target.value.lenght > 0) {
+    if (e.target.value.length > 0) {
         campo.style.borderBottomColor = 'green';
         campo.classList.remove('error');
     } else {
         e.target.classList.add('border', 'border-red-500');
     }
 
-    // Validar unicamente el email
 
+
+    // Validar unicamente el email
     if (this.type === 'email') {
         validarEmail(this);
     }
+
 
     if (email.value !== '' && asunto.value !== '' && mensaje.value !== '') {
         btnEnviar.disabled = false;
@@ -62,32 +63,28 @@ function validarFormulario(e) {
     }
 }
 
-// Resetear el formulario
+// Resetear el formulario 
 function resetFormulario(e) {
     formularioEnviar.reset();
     e.preventDefault();
 }
 
-
 // Cuando se envia el correo
-
 function enviarEmail(e) {
 
     e.preventDefault();
 
-    // Spinner al presionar enviar 
 
+    // Spinner al presionar Enviar
     const spinner = document.querySelector('#spinner');
     spinner.style.display = 'flex';
 
     // Gif que envia email
-
     const enviado = document.createElement('p');
     enviado.textContent = 'Mensaje Enviado Correctamente';
-    enviado.classList.add('bg');
+    enviado.classList.add('bg')
 
-
-    // Ocultar Spinner y mostrar gif de enviado 
+    // Ocultar Spinner y mostrar gif de enviado
     setTimeout(() => {
         spinner.style.display = 'none';
 
@@ -96,6 +93,24 @@ function enviarEmail(e) {
         setTimeout(() => {
             enviado.remove();
             formularioEnviar.reset();
-        }, 5000)
-    }, 3000)
+        }, 5000);
+    }, 3000);
+
+
+}
+
+
+
+function validarEmail(campo) {
+    const mensaje = campo.value;
+
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (re.test(mensaje.toLowerCase())) {
+        campo.style.borderBottomColor = 'green';
+        campo.classList.remove('error');
+    } else {
+        campo.style.borderBottomColor = 'red';
+        campo.classList.add('error');
+    }
 }
